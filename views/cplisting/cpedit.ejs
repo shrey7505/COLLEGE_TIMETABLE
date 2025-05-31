@@ -1,0 +1,88 @@
+<% layout("/layouts/boilerplat") %>
+<body> 
+<div class="faculty-edit-container body1">
+    
+    <h2 class="faculty-edit-title">Edit Faculty Details</h2>
+    <form method="post" action="/cplisting/<%= cpdata._id %>?_method=PUT" enctype="multipart/form-data" class="faculty-edit-form">
+        
+        <!-- Name -->
+        <div class="form-group">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" id="name" name="cplisting[name]" required value="<%= cpdata.name %>" class="form-input">
+        </div>
+
+        <!-- Designation -->
+        <div class="form-group">
+            <label for="designation" class="form-label">Designation:</label>
+            <input type="text" id="designation" name="cplisting[designation]" required value="<%= cpdata.designation %>" class="form-input">
+        </div>
+
+        <!-- Qualifications -->
+        <div class="form-group">
+            <label for="qualifications" class="form-label">Qualifications:</label>
+            <textarea id="qualifications" name="cplisting[qualifications]" rows="3" required class="form-textarea"><%= cpdata.qualifications %></textarea>
+        </div>
+
+        <!-- Academic Experience -->
+        <div class="form-group">
+            <label for="academics" class="form-label">Academic Experience (Years):</label>
+            <input type="number" id="academics" name="cplisting[experience][academics]" required value="<%= cpdata.experience.academics %>" class="form-input">
+        </div>
+
+        <!-- Industry Experience -->
+        <div class="form-group">
+            <label for="industry" class="form-label">Industry Experience (Years):</label>
+            <input type="number" id="industry" name="cplisting[experience][industry]" required value="<%= cpdata.experience.industry %>" class="form-input">
+        </div>
+
+        <!-- Emails -->
+        <div class="form-group">
+            <label for="emails" class="form-label">Emails:</label>
+            <input type="email" id="emails" name="cplisting[contact][emails]" 
+                   value="<%= cpdata.contact.emails ? cpdata.contact.emails.join(', ') : '' %>"
+                   class="form-input" multiple>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="form-group">
+            <label for="whatsapp" class="form-label">WhatsApp Number:</label>
+            <input type="text" id="whatsapp" name="cplisting[contact][whatsapp]" required value="<%= cpdata.contact.whatsapp %>" class="form-input">
+        </div>
+
+        <!-- Upload Image -->
+        <div class="form-group">
+            <label for="image" class="form-label">Upload Image:</label>
+            <input type="file" id="image" name="cplisting[image]" class="form-input">
+        </div>
+
+        <!-- Subjects Taught -->
+        <label class="form-label taught-subjects-label">Subjects Taught:</label>
+        <div class="taught-subjects-wrapper">
+          <% semesters.forEach((semester) => { %>
+            <div class="semester-section">
+              <h4 class="semester-title">Semester <%= semester.semester %></h4>
+              <div class="subjects-grid">
+                <% semester.courses.forEach((course) => { %>
+                  <div class="subject-checkbox-item">
+                    <input 
+                      type="checkbox" 
+                      id="subject-<%= course.subject %>" 
+                      name="cplisting[subjects][]" 
+                      value="<%= course.subject %>" 
+                      <% if (cpdata.subjects && cpdata.subjects.includes(course.subject)) { %>checked<% } %>
+                    >
+                    <label for="subject-<%= course.subject %>"><%= course.subject %></label>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            <button type="submit" class="form-button">Update Details</button>
+        </div>
+    </form>
+</div>
+</body>

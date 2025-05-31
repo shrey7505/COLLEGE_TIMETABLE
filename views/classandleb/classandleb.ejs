@@ -1,0 +1,61 @@
+<% layout("/layouts/boilerplat") %>
+
+<body>
+  <div class="class-container">
+    <h2 class="class-title">Classrooms & Laboratories</h2>
+
+    <% data.forEach(item => { %>
+      <table class="class-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Number</th>
+            <th>Capacity</th>
+            <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+              <th>Action</th>
+            <% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <% item.classrooms.forEach(classroom => { %>
+            <tr>
+              <td>Classroom</td>
+              <td><%= classroom.room_number %></td>
+              <td><%= classroom.capacity %></td>
+              <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+                <td>
+                  <form method="POST" action="/classandleb/<%= classroom._id %>?_method=DELETE">
+                    <input type="hidden" name="type" value="Classroom">
+                    <button class="delete-btn" type="submit">DELETE</button>
+                  </form>
+                </td>
+              <% } %>
+            </tr>
+          <% }) %>
+
+          <% item.laboratories.forEach(lab => { %>
+            <tr>
+              <td>Laboratory</td>
+              <td><%= lab.lab_id %></td>
+              <td><%= lab.capacity %></td>
+              <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+                <td>
+                  <form method="POST" action="/classandleb/<%= lab._id %>?_method=DELETE">
+                    <input type="hidden" name="type" value="Laboratory">
+                    <button class="delete-btn" type="submit">DELETE</button>
+                  </form>
+                </td>
+              <% } %>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% }) %>
+
+    <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+      <form action="/classandleb/new">
+        <button class="add-btn">ADD NEW DATA</button>
+      </form>
+    <% } %>
+  </div>
+</body>

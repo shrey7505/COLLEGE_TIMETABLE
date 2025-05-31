@@ -1,0 +1,76 @@
+<% layout("/layouts/boilerplat") %>
+<body>
+    
+  <div class="faculty-card">
+    <h2 class="faculty-name"><%= csddata.owner.username %></h2>
+    <h2 class="faculty-name"><%= csddata.name %></h2>
+    <h3 class="faculty-title"><%= csddata.designation %></h3>
+
+    <!-- Profile Image -->
+    <img src="<%= csddata.image.url %>" alt="Profile Picture" class="faculty-image" />
+
+    <!-- Experience -->
+    <p class="faculty-info">
+        <strong>Academic Experience:</strong> <%= csddata.experience.academics %> years
+    </p>
+    <p class="faculty-info">
+        <strong>Industry Experience:</strong> <%= csddata.experience.industry %> years
+    </p>
+
+    <!-- Qualifications -->
+    <p class="faculty-info"><strong>Qualifications:</strong></p>
+    <ul class="faculty-list">
+        <% csddata.qualifications.forEach(function(q) { %>
+            <li><%= q %></li>
+        <% }); %>
+    </ul>
+
+    <!-- Emails -->
+    <p class="faculty-info"><strong>Emails:</strong></p>
+    <ul class="email-list faculty-list">
+      <% 
+        let emails = csddata.contact.emails; 
+        if (typeof emails === 'string') {
+          emails = emails.split(',');
+        }
+        emails.forEach(function(email) { 
+      %>
+        <li><a href="mailto:<%= email.trim() %>" class="contact-link"><%= email.trim() %></a></li>
+      <% }); %>
+    </ul>
+
+    <!-- WhatsApp Contact -->
+    <p class="faculty-info">
+        <strong>WhatsApp:</strong> 
+        <a href="https://wa.me/<%= csddata.contact.whatsapp %>" target="_blank" class="contact-link whatsapp-contact">
+            <%= csddata.contact.whatsapp %>
+        </a>
+    </p>
+
+    <!-- Subjects Taught -->
+    <p class="faculty-info"><strong>Subjects Taught:</strong></p>
+    <ul class="faculty-list">
+      <% if (csddata.subjects && csddata.subjects.length > 0) { %>
+        <% csddata.subjects.forEach(function(subject) { %>
+          <li><%= subject %></li>
+        <% }); %>
+      <% } else { %>
+        <li>No subjects listed.</li>
+      <% } %>
+    </ul>
+
+    <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+      <div>
+        <!-- Action Buttons -->
+        <a href="/csdlisting/<%= csddata._id %>/edit" class="action-link">EDIT</a>
+
+        <form method="post" action="/csdlisting/<%= csddata._id %>?_method=DELETE" class="delete-form" style="display:inline;">
+            <button type="submit">DELETE</button>
+        </form>
+      </div>
+    <% } %>
+
+  </div>
+
+</body>
+

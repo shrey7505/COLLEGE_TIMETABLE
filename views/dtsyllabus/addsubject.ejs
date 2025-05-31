@@ -1,0 +1,40 @@
+
+<% layout("/layouts/boilerplat") %>
+
+<body>
+    <div class="container-wrapper">
+        <div class="header-box">
+            <h1 class="form-title">Add New Subject</h1>
+        </div>    
+    
+        <form action="/dtsyllabus/add" method="POST" class="subject-entry-form">
+            <label for="semester" class="input-label">Select Semester:</label>
+            <select name="semester" id="semester" class="dropdown-select" required>
+                <% for (let i = 1; i <= 8; i++) { %>
+                    <option value="<%= i %>">Semester <%= i %></option>
+                <% } %>
+            </select>
+    
+            <label for="courseCode" class="input-label">Course Code:</label>
+            <input type="text" name="courseCode" id="courseCode" class="text-field" required>
+    
+            <label for="subject" class="input-label">Subject:</label>
+            <input type="text" name="subject" id="subject" class="text-field" required>
+    
+            <label for="theoryHours" class="input-label">Theory Hours:</label>
+            <input type="number" name="theoryHours" id="theoryHours" class="number-input" value="0" required>
+    
+            <label for="tutorialHours" class="input-label">Tutorial Hours:</label>
+            <input type="number" name="tutorialHours" id="tutorialHours" class="number-input" value="0" required>
+    
+            <label for="practicalHours" class="input-label">Practical Hours:</label>
+            <input type="number" name="practicalHours" id="practicalHours" class="number-input" value="0" required>
+    
+            <label for="credits" class="input-label">Credits:</label>
+            <input type="number" name="credits" id="credits" class="number-input" required>
+    
+            <button type="submit" class="submit-btn">Add Subject</button>
+        </form>
+    </div>
+    
+</body>

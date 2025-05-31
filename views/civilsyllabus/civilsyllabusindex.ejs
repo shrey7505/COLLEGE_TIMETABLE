@@ -1,0 +1,61 @@
+<% layout("/layouts/boilerplat") %>
+<div class="container">
+  <h1 class="main-title">civil Subjects List</h1> 
+  <main>
+    <% if (semesters.length > 0) { %>
+      <% semesters.forEach(semester => { %>
+        <section class="semester-box">
+          <h2 class="semester-title">Semester <%= semester.semester %></h2>
+          <table class="course-table">
+            <thead>
+              <tr>
+                <th class="table-header">Course Code</th>
+                <th class="table-header">Subject</th>
+                <th class="table-header">Theory Hours</th>
+                <th class="table-header">Tutorial Hours</th>
+                <th class="table-header">Practical Hours</th>
+                <th class="table-header">Credits</th>
+                <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+                <th class="table-header">Actions</th> <!-- New Column for Actions -->
+                <% } %>
+              </tr>
+            </thead>
+            <tbody>
+              <% semester.courses.forEach(course => { %>
+                <tr class="course-row">
+                  <td class="table-cell" data-label="Course Code"><%= course.courseCode %></td>
+                  <td class="table-cell" data-label="Subject"><%= course.subject %></td>
+                  <td class="table-cell" data-label="Theory Hours"><%= course.theoryHours %></td>
+                  <td class="table-cell" data-label="Tutorial Hours"><%= course.tutorialHours %></td>
+                  <td class="table-cell" data-label="Practical Hours"><%= course.practicalHours %></td>
+                  <td class="table-cell" data-label="Credits"><%= course.credits %></td>
+                  <td class="table-cell">
+                    
+                      <form action="/civilsyllabus/delete" method="POST" class="delete-container">
+                        <input type="hidden" name="semester" value="<%= semester.semester %>" class="hidden-input">
+                        <input type="hidden" name="courseCode" value="<%= course.courseCode %>" class="hidden-input">
+                        <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+                        <button type="submit" class="delete-btn">Delete</button>
+                        <% } %>
+                    </form>
+                    
+                  </form>
+                  
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </section>
+      <% }); %>
+    <% } else { %>
+      <p class="no-data-message">No semesters available.</p>
+    <% } %>
+  </main>
+</div>
+<% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+<!-- Add New Subject Button -->
+<button class="add-subject-btn">
+  <a href="/civilsyllabus/add">Add New Subject</a>
+</button>
+<% } %>

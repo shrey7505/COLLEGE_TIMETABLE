@@ -1,0 +1,85 @@
+<% layout("/layouts/boilerplat") %>
+<body> 
+
+    <div class="faculty-form-container">
+        <h2 class="faculty-form-title">Enter DT Faculty Details</h2>
+    
+        <!-- Faculty Data Form -->
+        <form action="/dtlisting" method="POST" class="faculty-form" enctype="multipart/form-data">
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" id="name" name="dtlisting[name]" class="form-input" required>
+            </div>
+    
+            <!-- Designation -->
+            <div class="form-group">
+                <label for="designation" class="form-label">Designation:</label>
+                <input type="text" id="designation" name="dtlisting[designation]" class="form-input" required>
+            </div>
+    
+            <!-- Qualifications -->
+            <div class="form-group">
+                <label for="qualification" class="form-label">Qualifications:</label>
+                <textarea id="qualification" name="dtlisting[qualification]" rows="3" class="form-textarea" required></textarea>
+            </div>
+    
+            <!-- Academic Experience -->
+            <div class="form-group">
+                <label for="academics" class="form-label">Academic Experience (Years):</label>
+                <input type="number" id="academics" name="dtlisting[experience][academics]" class="form-input" required>
+            </div>
+    
+            <!-- Industry Experience -->
+            <div class="form-group">
+                <label for="industry" class="form-label">Industry Experience (Years):</label>
+                <input type="number" id="industry" name="dtlisting[experience][industry]" class="form-input" required>
+            </div>
+    
+            <!-- Emails Input Field -->
+            <label for="emails" class="form-label">Emails:</label>
+            <input type="email" id="emails" name="dtlisting[contact][emails]" multiple class="form-input" required>
+    
+            <!-- WhatsApp -->
+            <div class="form-group">
+                <label for="whatsapp" class="form-label">WhatsApp Number:</label>
+                <input type="text" id="whatsapp" name="dtlisting[contact][whatsapp]" class="form-input" required>
+            </div>
+    
+            <!-- Image Upload -->
+            <div class="form-group">
+              <label for="image" class="form-label">Upload Image:</label>
+              <input type="file" id="image" name="dtlisting[image]" class="form-input">
+            </div>
+
+            <!-- Subjects Taught -->
+            <label class="form-label faculty-subjects-label">Subjects Taught:</label>
+            <div class="faculty-subjects-container">
+              <% semesters.forEach((semester) => { %>
+                <div class="faculty-semester-section">
+                  <h4 class="faculty-semester-heading">Semester <%= semester.semester %></h4>
+                  <div class="faculty-courses-grid">
+                    <% semester.courses.forEach((course) => { %>
+                      <div class="faculty-subject-item">
+                        <input 
+                          type="checkbox" 
+                          id="subject-<%= course.subject %>" 
+                          name="dtlisting[subjects][]" 
+                          value="<%= course.subject %>"
+                        >
+                        <label for="subject-<%= course.subject %>"><%= course.subject %></label>
+                      </div>
+                    <% }) %>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="form-button">Submit</button>
+            </div>
+        </form>
+    </div>
+
+</body>

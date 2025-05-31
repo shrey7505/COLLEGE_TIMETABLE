@@ -1,0 +1,114 @@
+<% layout("/layouts/boilerplat") %>
+
+<% let subjectMap = {}; %>
+<% let facultyMap = {}; %>
+
+<div class="tt-full-code">
+  <div class="tt-wrapper">
+    <div class="tt-header">
+      <img src="/img/adit logo.png" alt="Left Logo" class="tt-logo tt-logo-left" />
+      <h2 class="tt-title"><%= branch %> <%= section %> <%= semester %> Semester Timetable</h2>
+      <img src="/img/cvmu logo.jpg" alt="Right Logo" class="tt-logo tt-logo-right" />
+    </div>
+  
+    <table class="tt-table">
+      <thead>
+        <tr>
+          <th class="tt-th">Time Slot</th>
+          <% days.forEach(day => { %>
+            <th class="tt-th"><%= day %></th>
+          <% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <% timeSlots.forEach(slot => { %>
+          <tr>
+            <td class="tt-timeslot"><%= slot %></td>
+            <% if (slot === 'Lunch Break') { %>
+              <td class="tt-lunch" colspan="<%= days.length %>">🍱 Lunch Break</td>
+            <% } else { %>
+              <% days.forEach(day => { %>
+                <td class="tt-cell">
+                  <% let lectures = scheduleMap[day][slot]; %>
+                  <% if (lectures.length === 0) { %>
+                    <div class="tt-no-lecture">-</div>
+                  <% } else { %>
+                    <div class="tt-lecture-container">
+                      <% lectures.forEach(lec => { %>
+                        <div class="tt-lecture-block">
+                          <div class="tt-subject">
+                            <strong>
+                              <% 
+                                const subjectWords = lec.subject.trim().split(" ");
+                                let subjectDisplay = subjectWords.length === 1 
+                                  ? lec.subject 
+                                  : subjectWords.map(word => word.charAt(0).toUpperCase()).join("");
+                                subjectMap[subjectDisplay] = lec.subject;
+                              %>
+                              <%= subjectDisplay %>
+                            </strong>
+                          </div>
+  
+                          <div class="tt-batch"><%= lec.batch %></div>
+                          <div class="tt-faculty">
+                            <% 
+                              const facultyParts = lec.faculty.trim().split(" ");
+                              const facultyShort = facultyParts.map(part => part.charAt(0).toUpperCase() + ".").join(" ");
+                              facultyMap[facultyShort] = lec.faculty;
+                            %>
+                            <%= facultyShort %>
+                          </div>
+                          <div class="tt-room"><%= lec.locationNumber %></div>
+                        </div>
+                      <% }); %>
+                    </div>
+                  <% } %>
+                </td>
+              <% }); %>
+            <% } %>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <!-- Legends and Print Button INSIDE wrapper -->
+    <div class="tt-extra-details">
+      <div class="tt-legend-wrapper">
+        <div class="tt-legend">
+          <h4>📘 Subject Legend</h4>
+          <ul>
+            <% for (let short in subjectMap) { %>
+              <li><strong><%= short %></strong> - <%= subjectMap[short] %></li>
+            <% } %>
+          </ul>
+        </div>
+    
+        <div class="tt-legend">
+          <h4>👩‍🏫 Faculty Legend</h4>
+          <ul>
+            <% for (let short in facultyMap) { %>
+              <li><strong><%= short %></strong> - <%= facultyMap[short] %></li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    
+      <div class="tt-actions">
+        <button onclick="printTimetable()" class="tt-print-button">📄 Save Timetable as PDF</button>
+      </div>
+    
+    </div>
+  </div>
+ 
+</div>
+<form action="/timetable/delete-timetable/<%= timetable._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this timetable?');">
+  <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+  <button type="submit" class="tt-delete-button">🗑️ Delete Timetable</button>
+  <% } %>
+</form>
+
+<script>
+  function printTimetable() {
+    window.print();
+  }
+</script>

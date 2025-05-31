@@ -1,0 +1,24 @@
+<% layout("/layouts/boilerplat") %>
+
+<div class="animated-form-container">
+    <h2 class="animated-form-title">Add New Classroom/Laboratory</h2>
+
+    <form action="/classandleb" method="POST" class="animated-form">
+        <label for="type" class="animated-label">Select Type:</label>
+        <select name="type" id="type" class="animated-select" required>
+            <option value="Classroom">Classroom</option>
+            <option value="Laboratory">Laboratory</option>
+        </select>
+
+        <label for="room_number" class="animated-label">Room/Lab Number:</label>
+        <input type="text" name="room_number" id="room_number" class="animated-input" required>
+
+        <label for="capacity" class="animated-label">Capacity:</label>
+        <input type="number" name="capacity" id="capacity" class="animated-input" required>
+
+        <button type="submit" class="animated-add-btn">Add</button>
+    </form>
+</div>
+
+
+</body>

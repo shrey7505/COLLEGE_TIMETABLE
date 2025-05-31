@@ -1,0 +1,22 @@
+<% layout("/layouts/boilerplat") %>
+<body>
+  <h1 class="section-title">fpt Faculty List</h1>
+  <div class="grid-card-wrapper">
+    <% for (data of fptdata) { %>
+      <div class="grid-card">
+        <img src="<%= data.image.url %>" alt="<%= data.name %>" class="grid-card-img">
+        <div class="grid-card-content">
+          <h5 class="grid-card-title"><%= data.name %></h5>
+          <a href="/fptlisting/<%= data._id %>" class="grid-card-btn">View Details</a>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+    <form action="/fptlisting/new" method="get" class="add-data-form">
+      <button class="add-data-btn">ADD DATA</button>
+    </form>
+  <% } %>
+
+</body>

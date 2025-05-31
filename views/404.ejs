@@ -1,0 +1,12 @@
+<% layout("/layouts/boilerplat") %>
+<body>
+  <div class="error-page">
+      <h1 class="error-title"><%= statusCode || 404 %></h1>
+      <p class="error-message"><%= message || "Oops! This page wandered off..." %></p> 
+      
+      <!-- Cartoon Image -->
+      <img src="/img/404.png" alt="Lost Cartoon" class="cartoon-img">
+
+      <button onclick="window.location.href='/'" class="back-button">Go Home</button>
+  </div>
+</body>

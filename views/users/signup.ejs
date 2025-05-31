@@ -1,0 +1,36 @@
+<% layout("/layouts/boilerplat") %>
+
+<body>
+  <div class="signupbg">
+    <div class="signup-wrapper">
+      <!-- Left side: Image -->
+      <div class="signup-image"></div>
+
+      <!-- Right side: Sign Up Form -->
+      <div class="signup-box">
+        <h2 class="signup-title">Create an Account 🎉</h2>
+        <p class="signup-subtitle">Please sign up to get started 🚀</p>
+        <form action="/signup" method="POST">
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" id="username" required>
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password" required>
+          </div>
+          <button type="submit" class="btn-signup">Sign Up</button>
+        </form>
+
+        <!-- Login Link: Links to the /login route -->
+        <div class="login-link">
+          <p>Already have an account? <a href="/login" class="btn-login-link">Log In</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

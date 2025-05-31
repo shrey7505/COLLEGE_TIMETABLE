@@ -1,0 +1,126 @@
+<nav class="custom-navbar navbar navbar-expand-lg ">
+  <div class="container-fluid custom-container">
+    <a class="navbar-brand custom-brand" href="http://adit.ac.in/"><img src="/img/adit logo.png" alt="adit logo"></i></a>
+    <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon custom-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse custom-collapse" id="navbarNav">
+      <ul class="navbar-nav custom-nav">
+        <li class="nav-item custom-nav-item">
+          <a class="nav-link active custom-nav-link custom-nav-link-home" aria-current="page" href="/home">Home</a>
+          </li>
+
+          <li class="nav-item custom-nav-item">
+            <a class="nav-link active custom-nav-link" aria-current="page" href="/classandleb">Classrooms & Laboratories</a>
+          </li>
+          <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+            <li class="nav-item custom-nav-item">
+              <a class="nav-link active custom-nav-link" aria-current="page" href="/timetable/add-class">Make Time Table</a>
+            </li>
+          <% } %>
+        
+          <li class="nav-item custom-nav-item">
+            <a class="nav-link active custom-nav-link" aria-current="page" href="/timetable/select-timetable">Show Time Table</a>
+          </li>
+      </ul>
+                <!-- Dropdown:  Faculty Data -->
+                <li class="nav-item dropdown custom-nav-dropdown">
+                  <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" 
+                      aria-expanded="false">
+                       Faculty 
+                  </a>
+                  <ul class="dropdown-menu custom-dropdown-menu">
+                      <li><a class="dropdown-item custom-dropdown-item" href="/itlisting"> IT Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/cplisting"> CP Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/automobilelisting"> AUTOMOBILE Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/dtlisting"> DT Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/eaclisting"> EAC Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/electricallisting"> ELECTRICAL Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/fptlisting"> FPT Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/mechenicallisting"> MECHENICAL Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/civillisting"> CIVIL Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/csdlisting"> CSD Faculty</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/ailisting"> AI Faculty</a></li>
+
+                  </ul>
+              </li>
+
+                <!-- Dropdown: Add Faculty Data -->
+                <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+                <li class="nav-item dropdown custom-nav-dropdown">
+                  <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" 
+                      aria-expanded="false">
+                      Add Faculty Data
+                  </a>
+                 
+                  <ul class="dropdown-menu custom-dropdown-menu">
+                      <li><a class="dropdown-item custom-dropdown-item" href="/itlisting/new">ADD IT DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/cplisting/new">ADD CP DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/csdlisting/new">ADD CSD DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/ailisting/new">ADD AI DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/automobilelisting/new">ADD AUTOMOBILE DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/civillisting/new">ADD CIVIL DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/dtlisting/new">ADD DT DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/eaclisting/new">ADD EAC DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/electricallisting/new">ADD ELECTRICAL DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/fptlisting/new">ADD FPT DATA</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/mechenicallisting/new">ADD MECHENICAL DATA</a></li>
+
+                  </ul>
+                 
+              </li>
+              <% } %> 
+
+              <!-- Dropdown: Subjects -->
+              <li class="nav-item dropdown custom-nav-dropdown">
+                  <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" 
+                      aria-expanded="false">
+                      Subjects
+                  </a>
+                  <ul class="dropdown-menu custom-dropdown-menu">
+                      <li><a class="dropdown-item custom-dropdown-item" href="/itsyllabus">IT Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/cpsyllabus">CP Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/csdsyllabus">CSD Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/aisyllabus">AI Subjects</a></li>
+
+                      <li><a class="dropdown-item custom-dropdown-item" href="/automobilesyllabus">AUTOMOBILE Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/civilsyllabus">CIVIL Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/dtsyllabus">DT Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/eacsyllabus">EAC Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/electricalsyllabus">ELECTRICAL Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/fptsyllabus">FPT Subjects</a></li>
+                      <li><a class="dropdown-item custom-dropdown-item" href="/mechenicalsyllabus">MECHENICAL Subjects</a></li>
+                  </ul>
+              </li>
+      
+      
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="collapse navbar-collapse custom-collapse" id="navbarNav">
+      <ul class="navbar-nav custom-nav ms-auto">
+        <% if (!currentUser) { %>
+          <li class="nav-item custom-nav-item">
+            <a class="nav-link active custom-nav-link" href="/signup">Sign Up</a>
+          </li>
+          <li class="nav-item custom-nav-item">
+            <a class="nav-link active custom-nav-link" href="/login">Log In</a>
+          </li>
+        <% } else { %>
+          <li class="nav-item custom-nav-item">
+            <a class="nav-link active custom-nav-link" href="/logout">Log Out</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+    
+  </div>
+</nav>

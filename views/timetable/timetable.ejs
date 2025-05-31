@@ -1,0 +1,622 @@
+<% layout("/layouts/boilerplat") %>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>College Timetable</title>
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+</style>
+
+<body>
+  <h2 class="tth2">
+    <b><%= branch %> <%= section %> <%= semester %> semester </b> College
+    Timetable
+  </h2>
+
+  <form action="/timetable/save-timetable" method="POST" class="ttform">
+    <input type="hidden" name="branch" value="<%= branch %>" />
+    <input type="hidden" name="section" value="<%= section %>" />
+    <input type="hidden" name="semester" value="<%= semester %>" />
+
+    <table class="tttable">
+      <tr>
+        <th>Time Slot</th>
+        <% let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+        'Saturday']; %> <% days.forEach(day => { %>
+        <th><%= day %></th>
+        <% }) %>
+      </tr>
+
+      <% let timeSlots = ['09:00 - 10:00 AM','10:00 - 11:00 AM', '11:00 - 12:00PM', '12:00 - 1:00 PM', 'Lunch Break', '2:00 - 3:00 PM', '3:00 - 4:00PM']; %> <% timeSlots.forEach((slot, slotIndex) => { %>
+      <tr>
+        <td><%= slot %></td>
+        <% if (slot === 'Lunch Break') { %>
+        <td colspan="6"><strong>Lunch Break</strong></td>
+        <% } else { %> <% days.forEach((day, dayIndex) => { %>
+        <td>
+          <!-- Number of Lectures Input -->
+          <label for="numLecs_<%= slotIndex %>_<%= dayIndex %>"
+            >No. of Lecs:</label
+          >
+          <select
+            name="schedule[<%= slotIndex %>][<%= dayIndex %>][numLecs]"
+            class="num-lecs-input"
+            id="numLecs_<%= slotIndex %>_<%= dayIndex %>"
+            data-slot="<%= slotIndex %>"
+            data-day="<%= dayIndex %>"
+          >
+            <option value="">Select</option>
+            <% for(let i = 1; i <= 10; i++) { %>
+            <option value="<%= i %>"><%= i %></option>
+            <% } %>
+          </select>
+          <br /><br />
+
+          <div
+            class="lec-details-container"
+            id="lec-details-<%= slotIndex %>-<%= dayIndex %>"
+          >
+            <div class="lecture-template" style="display: none">
+              <div class="lecture-block">
+                <select
+                  class="batch-dropdown"
+                  name="schedule[<%= slotIndex %>][<%= dayIndex %>][lectures][0][batch]"
+                >
+                  <option value="">Select Batch</option>
+                  <option value="class">Class</option>
+                  <% for (let i = 1; i <= batches; i++) { %>
+                  <option value="Batch <%= i %>">Batch <%= i %></option>
+                  <% } %>
+                </select>
+                <br />
+
+                <select
+                  class="subject-dropdown"
+                  name="schedule[<%= slotIndex %>][<%= dayIndex %>][lectures][0][subject]"
+                  data-slot="<%= slotIndex %>"
+                  data-day="<%= dayIndex %>"
+                >
+                  <option value="">Select Subject</option>
+                  <% subjects.forEach(subject => { %>
+                  <option value="<%= subject %>"><%= subject %></option>
+                  <% }) %>
+                </select>
+                <br />
+
+                <select
+                  class="type-dropdown"
+                  name="schedule[<%= slotIndex %>][<%= dayIndex %>][lectures][0][type]"
+                  data-slot="<%= slotIndex %>"
+                  data-day="<%= dayIndex %>"
+                >
+                  <option value="">Select Type</option>
+                </select>
+                <br />
+
+                <select
+                  class="faculty-dropdown"
+                  name="schedule[<%= slotIndex %>][<%= dayIndex %>][lectures][0][faculty]"
+                >
+                  <option value="">Select Faculty</option>
+                </select>
+                <br />
+
+                <select
+                  class="class-or-lab-dropdown"
+                  name="schedule[<%= slotIndex %>][<%= dayIndex %>][lectures][0][locationType]"
+                >
+                  <option value="">Select Class/Lab</option>
+                  <option value="class">Class</option>
+                  <option value="lab">Lab</option>
+                </select>
+                <br />
+
+                <select
+                  class="class-lab-number-dropdown"
+                  name="schedule[<%= slotIndex %>][<%= dayIndex %>][lectures][0][locationNumber]"
+                >
+                  <option value="">Select Number</option>
+                </select>
+                <hr />
+              </div>
+            </div>
+          </div>
+        </td>
+        <% }) %> <% } %>
+      </tr>
+      <% }) %>
+    </table>
+
+    <br />
+    <button type="submit" class="ttsubmit">Save Timetable</button>
+  </form>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ItfacultyData = <% if (typeof itfaculty !== 'undefined') { %><%- JSON.stringify(itfaculty) %><% } else { %>[]<% } %>;
+        const CpfacultyData = <% if (typeof cpfaculty !== 'undefined') { %><%- JSON.stringify(cpfaculty) %><% } else { %>[]<% } %>;
+        const AifacultyData = <% if (typeof aifaculty !== 'undefined') { %><%- JSON.stringify(aifaculty) %><% } else { %>[]<% } %>;
+        const CsdfacultyData = <% if (typeof csdfaculty !== 'undefined') { %><%- JSON.stringify(csdfaculty) %><% } else { %>[]<% } %>;
+        const MechenicalfacultyData = <% if (typeof mechenicalfaculty !== 'undefined') { %><%- JSON.stringify(mechenicalfaculty) %><% } else { %>[]<% } %>;
+        const CivilfacultyData = <% if (typeof civilfaculty !== 'undefined') { %><%- JSON.stringify(civilfaculty) %><% } else { %>[]<% } %>;
+        const FptfacultyData = <% if (typeof fptfaculty !== 'undefined') { %><%- JSON.stringify(fptfaculty) %><% } else { %>[]<% } %>;
+        const DtfacultyData = <% if (typeof dtfaculty !== 'undefined') { %><%- JSON.stringify(dtfaculty) %><% } else { %>[]<% } %>;
+        const ElectricalfacultyData = <% if (typeof electricalfaculty !== 'undefined') { %><%- JSON.stringify(electricalfaculty) %><% } else { %>[]<% } %>;
+        const EacfacultyData = <% if (typeof eacfaculty !== 'undefined') { %><%- JSON.stringify(eacfaculty) %><% } else { %>[]<% } %>;
+        const AutomobilefacultyData = <% if (typeof automobilefaculty !== 'undefined') { %><%- JSON.stringify(automobilefaculty) %><% } else { %>[]<% } %>;
+
+        const subjectDetails = <% if (typeof subjectDetails !== 'undefined') { %><%- JSON.stringify(subjectDetails) %><% } else { %>{}<% } %>;
+        const classData = <% if (typeof classrooms !== 'undefined') { %><%- JSON.stringify(classrooms) %><% } else { %>[]<% } %>;
+        const labData = <% if (typeof laboratories !== 'undefined') { %><%- JSON.stringify(laboratories) %><% } else { %>[]<% } %>;
+        const existingTimetables = <% if (typeof existingTimetables !== 'undefined') { %><%- JSON.stringify(existingTimetables) %><% } else { %>[]<% } %>;
+        
+        let batchCount = {};
+        
+        // Track all current assignments with cell identifiers
+        let timetableAssignments = {
+            faculty: {}, // Format: {facultyName: {dayIndex: {slotIndex: [cellIds]}}}
+            rooms: {}    // Format: {roomNumber: {dayIndex: {slotIndex: [cellIds]}}}
+        };
+    
+        // Global store for existing timetable assignments
+        let globalFacultyAssignments = {};
+        let globalRoomAssignments = {};
+    
+        // Initialize existing timetable data
+        function initializeExistingAssignments() {
+            existingTimetables.forEach(timetable => {
+                if (!timetable || !timetable.schedule) return;
+                
+                timetable.schedule.forEach(slot => {
+                    if (!slot) return;
+                    
+                    const dayIndex = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(slot.day);
+                    const slotIndex = ['09:00 - 10:00 AM', '10:00 - 11:00 AM', '11:00 - 12:00 PM', 
+                                      '12:00 - 1:00 PM', 'Lunch Break', '2:00 - 3:00 PM', 
+                                      '3:00 - 4:00 PM'].indexOf(slot.slot);
+                    
+                    if (dayIndex !== -1 && slotIndex !== -1 && slot.lectures) {
+                        slot.lectures.forEach(lecture => {
+                            if (!lecture) return;
+                            
+                            // Track faculty assignments
+                            if (lecture.faculty) {
+                                const facultyName = lecture.faculty.replace(/^,/, '').trim();
+                                if (facultyName) {
+                                    if (!globalFacultyAssignments[facultyName]) {
+                                        globalFacultyAssignments[facultyName] = {};
+                                    }
+                                    if (!globalFacultyAssignments[facultyName][dayIndex]) {
+                                        globalFacultyAssignments[facultyName][dayIndex] = {};
+                                    }
+                                    if (!globalFacultyAssignments[facultyName][dayIndex][slotIndex]) {
+                                        globalFacultyAssignments[facultyName][dayIndex][slotIndex] = [];
+                                    }
+                                    globalFacultyAssignments[facultyName][dayIndex][slotIndex].push({
+                                        timetableId: timetable._id,
+                                        branch: timetable.branch,
+                                        section: timetable.section
+                                    });
+                                }
+                            }
+                            
+                            // Track room assignments
+                            if (lecture.locationNumber) {
+                                const roomNumber = lecture.locationNumber.replace(/^,/, '').trim();
+                                if (roomNumber) {
+                                    if (!globalRoomAssignments[roomNumber]) {
+                                        globalRoomAssignments[roomNumber] = {};
+                                    }
+                                    if (!globalRoomAssignments[roomNumber][dayIndex]) {
+                                        globalRoomAssignments[roomNumber][dayIndex] = {};
+                                    }
+                                    if (!globalRoomAssignments[roomNumber][dayIndex][slotIndex]) {
+                                        globalRoomAssignments[roomNumber][dayIndex][slotIndex] = [];
+                                    }
+                                    globalRoomAssignments[roomNumber][dayIndex][slotIndex].push({
+                                        timetableId: timetable._id,
+                                        branch: timetable.branch,
+                                        section: timetable.section
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    
+        // Initialize existing assignments
+        initializeExistingAssignments();
+    
+        // Generate unique cell ID
+        function generateCellId(slotIndex, dayIndex, lectureIndex) {
+            return `cell-${slotIndex}-${dayIndex}-${lectureIndex}`;
+        }
+    
+        // When "No. of Lectures" input changes
+        document.querySelectorAll(".num-lecs-input").forEach(input => {
+            input.addEventListener("change", function () {
+                const slot = this.dataset.slot;
+                const day = this.dataset.day;
+                const lecCount = parseInt(this.value);
+                const container = document.getElementById(`lec-details-${slot}-${day}`);
+                const template = container.querySelector(".lecture-template .lecture-block");
+    
+                // Remove previous lecture blocks
+                container.querySelectorAll(".lecture-block").forEach(el => {
+                    if (!el.closest(".lecture-template")) {
+                        el.remove();
+                    }
+                });
+    
+                if (lecCount > 0 && template) {
+                    for (let i = 0; i < lecCount; i++) {
+                        const clone = template.cloneNode(true);
+                        clone.style.display = "block";
+                        clone.dataset.cellId = generateCellId(slot, day, i);
+                        clone.dataset.slotIndex = slot;
+                        clone.dataset.dayIndex = day;
+                        clone.dataset.lectureIndex = i;
+    
+                        // Set data attributes for dynamic dropdowns
+                        clone.querySelectorAll("select").forEach(select => {
+                            const name = select.getAttribute("name").replace(/\[lectures\]\[0\]/g, `[lectures][${i}]`);
+                            select.name = name;
+                        });
+    
+                        container.appendChild(clone);
+                    }
+                }
+                updateTimetableAssignments();
+            });
+        });
+    
+        // Function to check for clashes (including existing timetables)
+        function checkForClashes(type, value, dayIndex, slotIndex, currentCellId) {
+            if (!value) return false;
+            
+            const cleanValue = value.replace(/^,/, '').trim();
+            if (!cleanValue) return false;
+            
+            // Check current form assignments
+            const currentAssignments = (type === 'faculty') 
+                ? timetableAssignments.faculty[cleanValue]?.[dayIndex]?.[slotIndex]
+                : timetableAssignments.rooms[cleanValue]?.[dayIndex]?.[slotIndex];
+            
+            if (currentAssignments) {
+                const hasCurrentClash = currentAssignments.some(cellId => cellId !== currentCellId);
+                if (hasCurrentClash) return true;
+            }
+            
+            // Check global assignments (existing timetables)
+            const globalAssignments = (type === 'faculty')
+                ? globalFacultyAssignments[cleanValue]?.[dayIndex]?.[slotIndex]
+                : globalRoomAssignments[cleanValue]?.[dayIndex]?.[slotIndex];
+            
+            return globalAssignments && globalAssignments.length > 0;
+        }
+    
+        // Function to get conflict details
+        function getConflictDetails(type, value, dayIndex, slotIndex) {
+            const cleanValue = value.replace(/^,/, '').trim();
+            if (!cleanValue) return [];
+            
+            const assignments = (type === 'faculty')
+                ? globalFacultyAssignments[cleanValue]?.[dayIndex]?.[slotIndex]
+                : globalRoomAssignments[cleanValue]?.[dayIndex]?.[slotIndex];
+            
+            return assignments ? assignments.map(a => `${a.branch} ${a.section}`) : [];
+        }
+    
+        // Function to update timetable assignments
+        function updateTimetableAssignments() {
+            timetableAssignments = { faculty: {}, rooms: {} };
+            
+            document.querySelectorAll(".lecture-block:not(.lecture-template .lecture-block)").forEach(block => {
+                const facultySelect = block.querySelector(".faculty-dropdown");
+                const roomSelect = block.querySelector(".class-lab-number-dropdown");
+                const dayIndex = block.dataset.dayIndex;
+                const slotIndex = block.dataset.slotIndex;
+                const cellId = block.dataset.cellId;
+                
+                const facultyName = facultySelect ? facultySelect.value.replace(/^,/, '').trim() : null;
+                const roomNumber = roomSelect ? roomSelect.value.replace(/^,/, '').trim() : null;
+                
+                if (facultyName) {
+                    if (!timetableAssignments.faculty[facultyName]) {
+                        timetableAssignments.faculty[facultyName] = {};
+                    }
+                    if (!timetableAssignments.faculty[facultyName][dayIndex]) {
+                        timetableAssignments.faculty[facultyName][dayIndex] = {};
+                    }
+                    if (!timetableAssignments.faculty[facultyName][dayIndex][slotIndex]) {
+                        timetableAssignments.faculty[facultyName][dayIndex][slotIndex] = [];
+                    }
+                    timetableAssignments.faculty[facultyName][dayIndex][slotIndex].push(cellId);
+                }
+                
+                if (roomNumber) {
+                    if (!timetableAssignments.rooms[roomNumber]) {
+                        timetableAssignments.rooms[roomNumber] = {};
+                    }
+                    if (!timetableAssignments.rooms[roomNumber][dayIndex]) {
+                        timetableAssignments.rooms[roomNumber][dayIndex] = {};
+                    }
+                    if (!timetableAssignments.rooms[roomNumber][dayIndex][slotIndex]) {
+                        timetableAssignments.rooms[roomNumber][dayIndex][slotIndex] = [];
+                    }
+                    timetableAssignments.rooms[roomNumber][dayIndex][slotIndex].push(cellId);
+                }
+            });
+        }
+    
+        // Unified event delegation
+        document.body.addEventListener("change", function (e) {
+            const target = e.target;
+            const wrapper = target.closest(".lecture-block");
+    
+            // Subject dropdown logic
+            if (target.classList.contains("subject-dropdown")) {
+                const selectedSubject = target.value;
+                const typeDropdown = wrapper.querySelector(".type-dropdown");
+                const facultyDropdown = wrapper.querySelector(".faculty-dropdown");
+    
+                typeDropdown.innerHTML = "<option value=''>Select Type</option>";
+                facultyDropdown.innerHTML = "<option value=''>Select Faculty</option>";
+    
+                if (subjectDetails[selectedSubject]) {
+                    if (subjectDetails[selectedSubject].theoryHours > 0) {
+                        typeDropdown.innerHTML += "<option value='Theory'>Theory</option>";
+                    }
+                    if (subjectDetails[selectedSubject].practicalHours > 0) {
+                        typeDropdown.innerHTML += "<option value='Lab'>Lab</option>";
+                    }
+                    if (subjectDetails[selectedSubject].tutorialHours > 0) {
+                        typeDropdown.innerHTML += "<option value='Tutorial'>Tutorial</option>";
+                    }
+                }
+            }
+    
+            // Type dropdown logic
+            if (target.classList.contains("type-dropdown")) {
+                const selectedSubject = wrapper.querySelector(".subject-dropdown").value;
+                const selectedType = target.value;
+                const facultyDropdown = wrapper.querySelector(".faculty-dropdown");
+    
+                if (!selectedSubject || !selectedType) return;
+    
+                const maxHours = selectedType === "Theory"
+                    ? subjectDetails[selectedSubject].theoryHours
+                    : selectedType === "Lab"
+                        ? subjectDetails[selectedSubject].practicalHours
+                        : subjectDetails[selectedSubject].tutorialHours;
+    
+                // Initialize the batch count for the selected batch if not done
+                const batchDropdown = wrapper.querySelector(".batch-dropdown");
+                const selectedBatch = batchDropdown.value;
+    
+                if (!batchCount[selectedBatch]) {
+                    batchCount[selectedBatch] = {};
+                }
+    
+                if (!batchCount[selectedBatch][selectedSubject]) {
+                    batchCount[selectedBatch][selectedSubject] = {};
+                }
+    
+                if (!batchCount[selectedBatch][selectedSubject][selectedType]) {
+                    batchCount[selectedBatch][selectedSubject][selectedType] = 0;
+                }
+    
+                // Count existing assignments for the selected subject and type
+                const count = batchCount[selectedBatch][selectedSubject][selectedType];
+    
+                // Check if the count exceeds max hours
+                if (count >= maxHours) {
+                    alert(`You can only assign ${maxHours} ${selectedType.toLowerCase()} lectures for "${selectedSubject}" in "${selectedBatch}".`);
+                    target.value = "";
+                    return;
+                }
+    
+                // Increment the count for the selected subject and type
+                batchCount[selectedBatch][selectedSubject][selectedType]++;
+    
+                // Populate faculty
+                facultyDropdown.innerHTML = "<option value=''>Select Faculty</option>";
+                CpfacultyData
+                    .filter(faculty => faculty.subjects.includes(selectedSubject))
+                    .forEach(faculty => {
+                        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+                
+                        
+                    });
+
+                    ItfacultyData
+                    .filter(faculty => faculty.subjects.includes(selectedSubject))
+                    .forEach(faculty => {
+                        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+                
+                        
+                    });
+
+                    AifacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+    CsdfacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+   MechenicalfacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+    CivilfacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+    FptfacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+    DtfacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+    ElectricalfacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+    EacfacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+    AutomobilefacultyData
+    .filter(faculty => faculty.subjects.includes(selectedSubject))
+    .forEach(faculty => {
+        facultyDropdown.innerHTML += `<option value="${faculty.name}">${faculty.name}</option>`;
+    });
+
+
+                    
+                    
+            }
+    
+            // Class/Lab room selection logic
+            if (target.classList.contains("class-or-lab-dropdown")) {
+                const classLabDropdown = wrapper.querySelector(".class-lab-number-dropdown");
+    
+                classLabDropdown.innerHTML = "<option value=''>Select Number</option>";
+    
+                if (target.value === "class") {
+                    classData.forEach(room => {
+                        classLabDropdown.innerHTML += `<option value="${room.room_number}">Room ${room.room_number}</option>`;
+                    });
+                } else if (target.value === "lab") {
+                    labData.forEach(lab => {
+                        classLabDropdown.innerHTML += `<option value="${lab.lab_id}">Lab ${lab.lab_id}</option>`;
+                    });
+                }
+            }
+    
+            // Faculty or room selection changed - check for clashes
+            if (target.classList.contains("faculty-dropdown") || 
+                target.classList.contains("class-lab-number-dropdown")) {
+                
+                updateTimetableAssignments();
+                
+                const dayIndex = wrapper.dataset.dayIndex;
+                const slotIndex = wrapper.dataset.slotIndex;
+                const cellId = wrapper.dataset.cellId;
+                const previousValue = target.dataset.previousValue || "";
+                
+                if (target.classList.contains("faculty-dropdown")) {
+                    const facultyName = target.value;
+                    if (facultyName && checkForClashes('faculty', facultyName, dayIndex, slotIndex, cellId)) {
+                        const conflicts = getConflictDetails('faculty', facultyName, dayIndex, slotIndex);
+                        alert(`Faculty ${facultyName.replace(/^,/, '')} is already booked at this time in: ${conflicts.join(', ') || 'another timetable'}`);
+                        target.value = previousValue;
+                    } else {
+                        target.dataset.previousValue = facultyName;
+                    }
+                }
+                
+                if (target.classList.contains("class-lab-number-dropdown")) {
+                    const roomNumber = target.value;
+                    if (roomNumber && checkForClashes('room', roomNumber, dayIndex, slotIndex, cellId)) {
+                        const locationType = wrapper.querySelector('.class-or-lab-dropdown').value;
+                        const conflicts = getConflictDetails('room', roomNumber, dayIndex, slotIndex);
+                        alert(`${locationType === 'class' ? 'Room' : 'Lab'} ${roomNumber.replace(/^,/, '')} is already booked at this time in: ${conflicts.join(', ') || 'another timetable'}`);
+                        target.value = "";
+                    }
+                }
+            }
+        });
+    
+        // Form submission handler
+        document.querySelector(".ttform").addEventListener("submit", function(e) {
+            updateTimetableAssignments();
+            let hasClash = false;
+            
+            // Check for any remaining clashes before submission
+            document.querySelectorAll(".lecture-block:not(.lecture-template .lecture-block)").forEach(block => {
+                const facultySelect = block.querySelector(".faculty-dropdown");
+                const roomSelect = block.querySelector(".class-lab-number-dropdown");
+                const dayIndex = block.dataset.dayIndex;
+                const slotIndex = block.dataset.slotIndex;
+                const cellId = block.dataset.cellId;
+                
+                if (facultySelect && facultySelect.value) {
+                    if (checkForClashes('faculty', facultySelect.value, dayIndex, slotIndex, cellId)) {
+                        hasClash = true;
+                        const conflicts = getConflictDetails('faculty', facultySelect.value, dayIndex, slotIndex);
+                        alert(`Faculty ${facultySelect.value.replace(/^,/, '')} is already booked in: ${conflicts.join(', ')}`);
+                    }
+                }
+                
+                if (roomSelect && roomSelect.value) {
+                    if (checkForClashes('room', roomSelect.value, dayIndex, slotIndex, cellId)) {
+                        hasClash = true;
+                        const locationType = block.querySelector('.class-or-lab-dropdown').value;
+                        const conflicts = getConflictDetails('room', roomSelect.value, dayIndex, slotIndex);
+                        alert(`${locationType === 'class' ? 'Room' : 'Lab'} ${roomSelect.value.replace(/^,/, '')} is already booked in: ${conflicts.join(', ')}`);
+                    }
+                }
+            });
+            
+            if (hasClash) {
+                e.preventDefault();
+                return;
+            }
+    
+            // Clean up empty lecture entries
+            const lectureContainers = document.querySelectorAll(".lec-details-container");
+            lectureContainers.forEach(container => {
+                const lectureBlocks = container.querySelectorAll(".lecture-block:not(.lecture-template .lecture-block)");
+                lectureBlocks.forEach(block => {
+                    const selects = block.querySelectorAll("select");
+                    let hasValues = false;
+                    selects.forEach(select => {
+                        if (select.value && select.value.trim() !== '') {
+                            hasValues = true;
+                        }
+                    });
+                    if (!hasValues) {
+                        block.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+    </script>
+</body>

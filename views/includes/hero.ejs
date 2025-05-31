@@ -1,0 +1,470 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Portal - Hero Section</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <div class="body-divider"></div>
+        <section class="hero">
+            <div class="hero-content">
+                
+                
+                <h1 class="hero-title">A.D. PATEL INSTITUTE OF TECHNOLOGY</h1>
+                
+                <p class="hero-subtitle">Engineering problems are under-defined; there are many solutions, good, bad, and indifferent. The art is to arrive at a good solution.</p>
+                <div class="custom-cta-buttons">
+                  <a href="/timetable/select-timetable" class="custom-btn custom-btn-primary">
+                    <i class="fas fa-calendar-alt"></i> &nbsp; View Timetables
+                  </a>
+                  <a href="#departments" class="custom-btn custom-btn-secondary">
+                    <i class="fas fa-info-circle"></i> &nbsp; Show Faculty Data
+                  </a>
+                </div>
+                
+            </div>
+            
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+
+        <section class="overview-section">
+            <div class="overview-content">
+              <h2 class="overview-title">Why Choose ADIT?</h2>
+              <p class="overview-text">
+                A.D. Patel Institute of Technology is a premier institution dedicated to innovation, research, and excellence in engineering education. With a legacy of academic rigor, experienced faculty, and a future-focused curriculum, we prepare students to thrive in the global tech landscape.
+              </p>
+              <div class="highlight-cards">
+                <div class="card">
+                  <h3>Modern Infrastructure</h3>
+                  <p>State-of-the-art labs, smart classrooms, and a fully equipped campus to foster learning and creativity.</p>
+                </div>
+                <div class="card">
+                  <h3>Industry Collaborations</h3>
+                  <p>Strong ties with leading industries for internships, projects, and placement opportunities.</p>
+                </div>
+                <div class="card">
+                  <h3>Experienced Faculty</h3>
+                  <p>Learn from highly qualified educators with both academic and industry experience.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+
+
+
+
+          
+         
+          <section class="events-section">
+            <div class="events-container">
+              <h2 class="main-event-title">Events & Workshops</h2>
+              <div class="event-cards">
+                <% events.forEach(event => { %>
+                  <div class="event-card">
+                    <h3 class="event-title"><%= event.title %></h3>
+                    <p><strong>Date:</strong> <%= new Date(event.date).toLocaleDateString() %></p>
+                    
+                    <p><strong>Description:</strong> <%= event.message %></p>
+                    <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+                    <form action="/events/<%= event._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                      <% } %>
+                    </form>
+                  </div>
+                <% }) %>
+              </div>
+            
+            </div>
+            <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+            <a href="/admin/events" class="add-event-link">
+                <button class="btn-add-event">Add Event</button>
+              </a>
+            <% } %>
+          </section>
+
+
+
+         <!-- Departments Showcase Section -->
+         <section class="departments-showcase" id="departments">
+          <div class="home-container">
+            <div class="section-header">
+              <h2 class="home-section-title">Departments</h2>
+              <p class="section-subtitle">Explore our specialized engineering departments</p>
+            </div>
+            
+            <div class="departments-grid">
+              <!-- First 4 departments visible by default -->
+              <!-- IT Department -->
+              <div class="department-item">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/it department.jpg" alt="IT Department" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">IT Department</h3>
+                    <a href="/itlisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Computer Engineering -->
+              <div class="department-item">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/cp department.jpg" alt="Computer Engineering" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Computer Engineering</h3>
+                    <a href="/cplisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Food & Technology -->
+              <div class="department-item">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/fpt department.webp" alt="Food & Technology" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Food & Technology</h3>
+                    <a href="/fptlisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- AI Department -->
+              <div class="department-item">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/ai department.webp" alt="AI Department" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">AI Department</h3>
+                    <a href="/ailisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Hidden departments (will be shown when "View More" is clicked) -->
+              <div class="department-item hidden-department">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/electrical department.webp" alt="Electrical Department" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Electrical Department</h3>
+                    <a href="/electricallisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Mechanical Department -->
+              <div class="department-item hidden-department">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/mechenical.webp" alt="Mechanical Department" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Mechanical Department</h3>
+                    <a href="/mechenicallisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- CSD Department -->
+              <div class="department-item hidden-department">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/csd.webp" alt="CSD Department" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Computer Science & Design</h3>
+                    <a href="/csdlisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Dairy Technology -->
+              <div class="department-item hidden-department">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/dt.webp" alt="Dairy Technology" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Dairy Technology</h3>
+                    <a href="/dtlisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Electronics & Communication -->
+              <div class="department-item hidden-department">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/eca.webp" alt="Electronics & Communication" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Electronics & Communication</h3>
+                    <a href="/ecalisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Automobile Engineering -->
+              <div class="department-item hidden-department">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/automobile.webp" alt="Automobile Engineering" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Automobile Engineering</h3>
+                    <a href="/automobilelisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Civil Engineering -->
+              <div class="department-item hidden-department">
+                <div class="department-card">
+                  <div class="department-img-container">
+                    <img src="/img/civil.webp" alt="Civil Engineering" class="department-img">
+                    <div class="department-overlay"></div>
+                  </div>
+                  <div class="department-content">
+                    <h3 class="department-name">Civil Engineering</h3>
+                    <a href="/civillisting" class="department-btn">View Faculty</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- View More Button -->
+            <div class="view-more-container text-center mt-5">
+              <button id="viewMoreBtn" class="view-more-btn">
+                <span>View More Departments</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+
+        <section class="leadership-messages">
+          <!-- Chairman's Message -->
+          <div class="leader-card">
+            <div class="leader-image right">
+              <img src="/img/chairmen.jpg" alt="Chairman Photo">
+            </div>
+            <div class="leader-content left">
+              <h2>Chairman's Message</h2>
+              <h4>Er. Shree Bhikhubhai B. Patel</h4>
+              <p class="position">Chairman, CVM | President, CVM University</p>
+              <p class="preview-text">
+                Education is said to be the transmission of knowledge, culture and civilization.
+              </p>
+              <button class="end-view-more-btn" onclick="toggleMessage(this)">View More</button>
+              <p class="full-message hidden">
+                Education is said to be the transmission of knowledge, culture and civilization. Since more than seven decades of its establishment by visionaries Shri Bhaikaka and Shri Bhikhabhai Saheb and inspiration by Shri Sardar Vallabhbhai Patel, Vallabh Vidyanagar of today seems like fulfilment of Tagor's vision of new India: "The inner spirit of India is calling us to establish, in this land, great centre, where all her intellectual forces will gather for the purpose of creation, and all her resources of knowledge and thought, Eastern and Western, will unite in perfect harmony." In the eighteenth year of the new millennium, we at Vallabh Vidyanagar, are poised on the brink of revolution. In this world, which moves at the speed of thought, our guiding principles used to change constantly, innovation and up gradation, both in terms of technology for our students and instil in them such high standards of knowledge and discipline that they can face any challenges anywhere in the world. Today, when aspirations are moving sky high and students are constantly challenged by a competitive and dynamic world, we strive to include confidence and competence in our students and equip them to face the challenges for years to come. I take the opportunity to introduce "A.D. PATEL INSTITUTE OF TECHNOLOGY" ,a college of largest private university of Gujarat 'CVM University'. Earlier the institute was affiliated with Sardar Patel University and Gujarat Technological University. We intend to make everything possible to extend helping hand for the students to get geared-up for the global spectrum in the 21st century, rightly called to be the century of knowledge.
+                <br><br>
+                We intend to make everything possible to extend helping hand for the students to get geared-up for the global spectrum in the 21st century.
+              </p>
+            </div>
+          </div>
+        
+          <!-- Principal's Message -->
+          <div class="leader-card reverse">
+            <div class="leader-image left">
+              <img src="/img/principle.jpg" alt="Principal Photo">
+            </div>
+            <div class="leader-content right">
+              <h2>Principal's Message</h2>
+              <h4>Dr. Vishal Singh</h4>
+              <p class="position">Principal, ADIT | WhatsApp: 9427603032</p>
+              <p class="preview-text">
+                It gives me immense pleasure to greet and welcome you all on behalf of the entire ADIT family...
+              </p>
+              <button class="end-view-more-btn" onclick="toggleMessage(this)">View More</button>
+              <p class="full-message hidden">
+                ADIT with a rich experience in engineering education for over two decades has established itself as one of the premier institutes in this region. We are part of largest private university of Gujarat "CVM University". We currently offer graduate courses in eleven branches of engineering in post-graduation in six disciplines. We have lush green campus, huge infrastructure with modern amenities, well equipped laboratories, a library with wide range of collections and highly experienced faculty members. We are committed to provide quality education to students and are constantly working to strive for better results which is evident as four of our departments got NBA accreditation till 2025. We are an ISO certified institute since 2005 and are amongst the first technical institutes to get ISO 9001:2015 certification.
+
+                As an established professional institution, we are aware of the fact that our responsibility does not cease by just producing the graduates but help them to get suitable employment during their study tenure. We have very active Training and Placement Cell which aims at enhancing employability of our students by providing support and training of soft skills and latest technological knowledge. We also encourage students to excel in competitive examinations such as GATE, UPSC, GPSC, GRE, IELTS, etc.
+                
+                For holistic development of students our institute provides ample opportunities to nurture talents whether it be through sports, literary or cultural activities. We have a large sports complex and Gymnasium to train students in games like Cricket, Football, Basketball, Tennis, Badminton, Table Tennis, etc. We as an institute has excelled in cultural activities and students have demonstrated skills on various platforms such as Vibrant Gujarat, National Youth Festival etc
+                
+                With changing times, we are also evolving and are focused on research activities and industrial collaboration. This would in turn give valuable exposure to our students to prepare them for the challenges of future. We have already undertaken a large number of consultancy and research projects in different branches of engineering through funding agencies like ISRO, DST, GUJCOST, DBT, GSBTM, MOFP, etc.
+                
+                I acknowledge and appreciate the contribution of our Alumni towards growth of our institute. I welcome you to visit our institute and invite you to be a proud member of this ever-growing family.
+              </p>
+            </div>
+          </div>
+        </section>
+        
+          
+          
+          
+          
+          
+
+        
+          
+         
+          
+          
+    
+    <script>
+        // Intersection Observer for scroll animations
+document.addEventListener('DOMContentLoaded', () => {
+  const eventsSection = document.querySelector('.events-section');
+  
+  if (eventsSection) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(eventsSection);
+  }
+});
+
+
+// Intersection Observer for scroll animations
+// Intersection Observer for scroll animations
+document.addEventListener('DOMContentLoaded', function() {
+  const section = document.querySelector('.departments-showcase');
+  
+  if (section) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          
+          // Set staggered delays for cards
+          const cards = entry.target.querySelectorAll('.department-card');
+          cards.forEach((card, index) => {
+            card.style.setProperty('--item-order', index);
+          });
+          
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -100px 0px'
+    });
+    
+    observer.observe(section);
+  }
+});
+document.addEventListener('DOMContentLoaded', function() {
+  const viewMoreBtn = document.getElementById('viewMoreBtn');
+  const departmentsGrid = document.querySelector('.departments-grid');
+  
+  if (viewMoreBtn && departmentsGrid) {
+    viewMoreBtn.addEventListener('click', function() {
+      // Toggle the 'show-all' class on the grid
+      departmentsGrid.classList.toggle('show-all');
+      
+      // Toggle button text and icon
+      const isExpanded = departmentsGrid.classList.contains('show-all');
+      viewMoreBtn.classList.toggle('active');
+      viewMoreBtn.querySelector('span').textContent = isExpanded ? 'Show Less' : 'View More Departments';
+      
+      // If collapsing, scroll to the section
+      if (!isExpanded) {
+        setTimeout(() => {
+          departmentsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      }
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const eventsSection = document.querySelector('.events-section');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  if (eventsSection) {
+    observer.observe(eventsSection);
+  }
+});
+
+
+
+  function toggleMessage(btn) {
+    const fullMessage = btn.nextElementSibling;
+    fullMessage.classList.toggle("hidden");
+    btn.innerText = fullMessage.classList.contains("hidden") ? "View More" : "View Less";
+  }
+
+
+    </script>
+    <script>
+      // Intersection Observer for section
+      document.addEventListener('DOMContentLoaded', function() {
+        const section = document.querySelector('.leadership-messages');
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+            }
+          });
+        }, { threshold: 0.1 });
+        
+        if (section) {
+          observer.observe(section);
+        }
+      });
+      
+      // Toggle message function
+      function toggleMessage(button) {
+        const fullMessage = button.nextElementSibling;
+        button.classList.toggle('active');
+        
+        if (fullMessage.classList.contains('show')) {
+          fullMessage.classList.remove('show');
+          setTimeout(() => fullMessage.classList.add('hidden'), 600);
+          button.textContent = button.textContent.includes('More') ? 'View Less' : 'View More';
+        } else {
+          fullMessage.classList.remove('hidden');
+          setTimeout(() => fullMessage.classList.add('show'), 10);
+          button.textContent = button.textContent.includes('More') ? 'View Less' : 'View More';
+        }
+      }
+      </script>
+</body>
+</html>

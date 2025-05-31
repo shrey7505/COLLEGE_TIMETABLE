@@ -1,0 +1,88 @@
+<% layout("/layouts/boilerplat") %>
+<body> 
+<div class="faculty-edit-container body1">
+    
+    <h2 class="faculty-edit-title">Edit Faculty Details</h2>
+    <form method="post" action="/csdlisting/<%= csddata._id %>?_method=PUT" enctype="multipart/form-data" class="faculty-edit-form">
+        
+        <!-- Name -->
+        <div class="form-group">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" id="name" name="csdlisting[name]" required value="<%= csddata.name %>" class="form-input">
+        </div>
+
+        <!-- Designation -->
+        <div class="form-group">
+            <label for="designation" class="form-label">Designation:</label>
+            <input type="text" id="designation" name="csdlisting[designation]" required value="<%= csddata.designation %>" class="form-input">
+        </div>
+
+        <!-- Qualifications -->
+        <div class="form-group">
+            <label for="qualifications" class="form-label">Qualifications:</label>
+            <textarea id="qualifications" name="csdlisting[qualifications]" rows="3" required class="form-textarea"><%= csddata.qualifications %></textarea>
+        </div>
+
+        <!-- Academic Experience -->
+        <div class="form-group">
+            <label for="academics" class="form-label">Academic Experience (Years):</label>
+            <input type="number" id="academics" name="csdlisting[experience][academics]" required value="<%= csddata.experience.academics %>" class="form-input">
+        </div>
+
+        <!-- Industry Experience -->
+        <div class="form-group">
+            <label for="industry" class="form-label">Industry Experience (Years):</label>
+            <input type="number" id="industry" name="csdlisting[experience][industry]" required value="<%= csddata.experience.industry %>" class="form-input">
+        </div>
+
+        <!-- Emails -->
+        <div class="form-group">
+            <label for="emails" class="form-label">Emails:</label>
+            <input type="email" id="emails" name="csdlisting[contact][emails]" 
+                   value="<%= csddata.contact.emails ? csddata.contact.emails.join(', ') : '' %>"
+                   class="form-input" multiple>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="form-group">
+            <label for="whatsapp" class="form-label">WhatsApp Number:</label>
+            <input type="text" id="whatsapp" name="csdlisting[contact][whatsapp]" required value="<%= csddata.contact.whatsapp %>" class="form-input">
+        </div>
+
+        <!-- Upload Image -->
+        <div class="form-group">
+            <label for="image" class="form-label">Upload Image:</label>
+            <input type="file" id="image" name="csdlisting[image]" class="form-input">
+        </div>
+
+        <!-- Subjects Taught -->
+        <label class="form-label taught-subjects-label">Subjects Taught:</label>
+        <div class="taught-subjects-wrapper">
+          <% semesters.forEach((semester) => { %>
+            <div class="semester-section">
+              <h4 class="semester-title">Semester <%= semester.semester %></h4>
+              <div class="subjects-grid">
+                <% semester.courses.forEach((course) => { %>
+                  <div class="subject-checkbox-item">
+                    <input 
+                      type="checkbox" 
+                      id="subject-<%= course.subject %>" 
+                      name="csdlisting[subjects][]" 
+                      value="<%= course.subject %>" 
+                      <% if (csddata.subjects && csddata.subjects.includes(course.subject)) { %>checked<% } %>
+                    >
+                    <label for="subject-<%= course.subject %>"><%= course.subject %></label>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            <button type="submit" class="form-button">Update Details</button>
+        </div>
+    </form>
+</div>
+</body>

@@ -1,0 +1,32 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ADIT</title>
+  </head> -->
+  <% layout("/layouts/boilerplat") %>
+  <body>
+    <h1 class="section-title">IT Faculty List</h1>
+    <div class="grid-card-wrapper">
+      <% for (data of itdata) { %>
+        <div class="grid-card">
+          <img src="<%= data.image.url %>" alt="<%= data.name %>" class="grid-card-img">
+          <div class="grid-card-content">
+            <h5 class="grid-card-title"><%= data.name %></h5>
+            <a href="/itlisting/<%= data.id %>" class="grid-card-btn">View Details</a>
+          </div>
+        </div>
+      <% } %>
+    </div>
+    
+    <% if (currentUser && currentUser._id.toString() === "67ff31a54b2d29d2457265b1") { %>
+
+    <form action="/itlisting/new" method="get" class="add-data-form">
+      <button class="add-data-btn">ADD DATA</button>
+    </form>
+
+    <% } %>
+    
+  </body>
+<!-- </html> -->
